@@ -1,0 +1,1064 @@
+/* ============================================================
+   FONTS — place Thunder & MangoGrotesque .woff2 files in /fonts/
+   ============================================================ */
+@font-face {
+  font-family: 'Thunder';
+  src: url('../fonts/Thunder-BoldLC.woff2') format('woff2'),
+       url('../fonts/Thunder-BoldLC.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thunder';
+  src: url('../fonts/Thunder-ExtraBoldLC.woff2') format('woff2'),
+       url('../fonts/Thunder-ExtraBoldLC.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Mango Grotesque';
+  src: url('../fonts/MangoGrotesque-Bold.woff2') format('woff2'),
+       url('../fonts/MangoGrotesque-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  --color-bg: #F4F4F4;
+  --color-card: #FFFFFF;
+  --color-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
+  --color-accent: #7bdcb5;
+  --color-accent-dark: #5cc49e;
+  --color-yes: #3dba7a;
+  --color-yes-bg: #e8f8ef;
+  --color-no: #c11103;
+  --color-no-bg: #fdecea;
+  --color-unsure: #f5b93e;
+  --color-unsure-bg: #fff8e6;
+  --color-feedback-correct: #7bdcb5;
+  --color-feedback-incorrect: #faadf2;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b7280;
+  --color-border: #e5e7eb;
+
+  --font-heading: 'Thunder', 'Inter', system-ui, sans-serif;
+  --font-body: 'Mango Grotesque', 'Inter', system-ui, sans-serif;
+
+  --radius-card: 24px;
+  --radius-btn: 9999px;
+  --card-max-width: 420px;
+
+  --transition-fast: 0.2s ease;
+  --transition-flip: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Prevent text selection during swipe */
+.card-area, .card-scene {
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+/* ============================================================
+   SCREENS
+   ============================================================ */
+.screen {
+  display: none;
+  min-height: 100dvh;
+  width: 100%;
+}
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Game screen: group header + card + buttons as a centered cluster */
+#screen-game.active {
+  justify-content: center;
+  gap: 4px;
+  padding: 24px 0;
+  overscroll-behavior: none;
+}
+
+/* ============================================================
+   INTRO SCREEN
+   ============================================================ */
+.intro-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 56px 24px 48px;
+  width: 100%;
+  max-width: var(--card-max-width);
+  min-height: 100dvh;
+  text-align: center;
+}
+
+.intro-logo img,
+.intro-logo svg {
+  height: 40px;
+  width: auto;
+}
+
+.intro-title {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 10vw, 3.2rem);
+  line-height: 1.05;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.intro-sub {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  max-width: 320px;
+}
+
+/* Swipe legend on intro */
+.swipe-legend {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 0;
+}
+.legend-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.legend-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.legend-icon svg {
+  width: 22px;
+  height: 22px;
+}
+.icon-left  { background: var(--color-no);     color: #fff; }
+.icon-down  { background: var(--color-unsure); color: #fff; }
+.icon-right { background: var(--color-yes);    color: #fff; }
+
+.legend-label {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+/* ============================================================
+   LANGUAGE TOGGLE
+   ============================================================ */
+.lang-toggle {
+  display: flex;
+  background: #e8e8e8;
+  border-radius: var(--radius-btn);
+  padding: 3px;
+  gap: 2px;
+}
+.lang-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: var(--radius-btn);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.lang-btn.active {
+  background: #fff;
+  color: var(--color-text);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.10);
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px 36px;
+  border-radius: var(--radius-btn);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  width: 100%;
+  max-width: 320px;
+}
+.btn-primary:hover {
+  background: var(--color-accent-dark);
+  transform: translateY(-1px);
+}
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 12px 24px;
+  border-radius: var(--radius-btn);
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+  width: 100%;
+  max-width: 320px;
+}
+.btn-secondary:hover {
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+
+/* ============================================================
+   GAME HEADER
+   ============================================================ */
+.game-header {
+  width: 100%;
+  max-width: var(--card-max-width);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 20px;
+  min-height: 48px;
+}
+
+.progress-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.progress-bar-track {
+  height: 6px;
+  background: var(--color-border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 99px;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+.progress-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-align: right;
+}
+
+/* ============================================================
+   CARD AREA
+   ============================================================ */
+.card-area {
+  flex: none;
+  width: 100%;
+  max-width: var(--card-max-width);
+  padding: 0 20px 24px; /* bottom padding makes stack peek visible */
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  perspective: 1200px;
+  overflow: visible;
+}
+
+/* Card scene — 3D container */
+.card-scene {
+  position: relative;
+  width: 100%;
+  height: min(60dvh, 540px);
+  overflow: visible; /* allow stack cards to peek below */
+}
+
+/* Stack cards behind the active one.
+   Cards are appended furthest-back first, so the TOP card is always the
+   LAST child. Use nth-last-child so the selectors work regardless of count. */
+.card-scene .card-wrapper:nth-last-child(2) {
+  transform: translateY(20px) scale(0.94);
+  z-index: 1;
+}
+.card-scene .card-wrapper:nth-last-child(n+3) {
+  transform: translateY(20px) scale(0.94);
+  z-index: 0;
+}
+
+/* Card wrapper — positioned absolutely for stacking */
+.card-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* 3D flip container */
+.card-flip {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform var(--transition-flip);
+}
+.card-flip.flipped { transform: rotateY(180deg); }
+
+/* Card face (front & back) */
+.card-face {
+  position: absolute;
+  inset: 0;
+  background: var(--color-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--color-card-shadow);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Single back face — pre-rotated so it's hidden on card front, visible after flip */
+.card-back-face { transform: rotateY(180deg); }
+
+/* ============================================================
+   CARD FRONT
+   ============================================================ */
+.card-front,
+.card-front * {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.card-front {
+  cursor: grab;
+}
+.card-front:active {
+  cursor: grabbing;
+}
+
+.card-illustration {
+  flex: 0 0 220px; /* fixed height — image area stays constant regardless of card height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 16px 0;
+  overflow: hidden;
+}
+.card-illustration img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.card-scenario {
+  flex: 1 1 0; /* takes remaining space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 24px 12px;
+  text-align: center;
+}
+.card-scenario p {
+  font-size: clamp(0.95rem, 3.5vw, 1.1rem);
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+/* Drag overlay stamp */
+.card-stamp {
+  position: absolute;
+  top: 24px;
+  padding: 6px 16px;
+  border-radius: 8px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.15s;
+  pointer-events: none;
+  border: 3px solid;
+  transform: rotate(-8deg);
+}
+.card-stamp.stamp-yes {
+  right: 20px;
+  color: var(--color-yes);
+  border-color: var(--color-yes);
+  background: rgba(61, 186, 122, 0.08);
+  transform: rotate(8deg);
+}
+.card-stamp.stamp-no {
+  left: 20px;
+  color: var(--color-no);
+  border-color: var(--color-no);
+  background: rgba(193, 1, 3, 0.08);
+  transform: rotate(-8deg);
+}
+.card-stamp.stamp-unsure {
+  left: 50%;
+  top: 24px;
+  transform: translateX(-50%) rotate(-4deg);
+  color: var(--color-unsure);
+  border-color: var(--color-unsure);
+  background: rgba(245, 185, 62, 0.08);
+}
+
+/* Color tint overlay during drag */
+.card-tint {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-card);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s;
+}
+.card-tint.tint-yes   { background: var(--color-yes); }
+.card-tint.tint-no    { background: var(--color-no); }
+.card-tint.tint-unsure { background: var(--color-unsure); }
+
+/* ============================================================
+   CARD BACK
+   ============================================================ */
+.card-back {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* Feedback banner */
+.feedback-banner {
+  padding: 12px 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.feedback-banner.correct {
+  background: var(--color-feedback-correct);
+}
+.feedback-banner.incorrect {
+  background: var(--color-feedback-incorrect);
+}
+.feedback-banner.unsure {
+  background: #f5b93e;
+}
+.feedback-banner span {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+/* Harassment type header */
+.harassment-header {
+  padding: 14px 20px 4px;
+  flex-shrink: 0;
+}
+.harassment-type {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(1.2rem, 5vw, 1.6rem);
+  color: var(--color-text);
+  line-height: 1.1;
+}
+.harassment-subtype {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Divider */
+.card-divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 10px 20px;
+  flex-shrink: 0;
+}
+
+/* Explanation */
+.card-explanation {
+  padding: 0 20px;
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+.card-explanation p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+/* Intervention tip */
+.intervention-section {
+  flex-shrink: 0;
+  padding: 8px 20px 0;
+}
+.intervention-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0fdf8;
+  border: 1.5px solid var(--color-accent);
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  transition: background var(--transition-fast);
+}
+.intervention-toggle:hover {
+  background: #dcf5ec;
+}
+.intervention-toggle .toggle-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.intervention-toggle .toggle-icon svg,
+.icon-shield { width: 18px; height: 18px; color: var(--color-accent-dark); }
+
+.intervention-toggle .toggle-arrow {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  transition: transform var(--transition-fast);
+  color: var(--color-accent-dark);
+}
+.icon-chevron { width: 16px; height: 16px; }
+.intervention-toggle.open .toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.intervention-content {
+  display: none;
+  padding: 12px 14px;
+  background: #f0fdf8;
+  border: 1.5px solid var(--color-accent);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+}
+.intervention-content.open {
+  display: block;
+}
+.intervention-5d-label {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--color-accent-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.intervention-content p {
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--color-text);
+}
+
+/* Card back action buttons */
+.card-back-actions {
+  flex-shrink: 0;
+  padding: 12px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.btn-next-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--color-text);
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border-radius: var(--radius-btn);
+  border: none;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+.btn-next-card:hover {
+  opacity: 0.85;
+}
+.btn-training-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 8px 20px;
+  border-radius: var(--radius-btn);
+  border: 1.5px solid var(--color-border);
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+.btn-training-inline:hover {
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+
+/* ============================================================
+   ACTION BUTTONS ROW
+   ============================================================ */
+.action-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 8px 20px;
+  min-height: 88px;
+  width: 100%;
+  max-width: var(--card-max-width);
+}
+
+.action-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  flex-shrink: 0;
+}
+.action-btn svg {
+  width: 26px;
+  height: 26px;
+}
+.action-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+.btn-no     { background: var(--color-no);     }
+.btn-unsure { background: var(--color-unsure); width: 50px; height: 50px; }
+.btn-unsure svg { width: 22px; height: 22px; }
+.btn-yes    { background: var(--color-yes);    }
+
+/* Hide action buttons when card back is shown */
+.action-buttons.hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ============================================================
+   END SCREEN
+   ============================================================ */
+.end-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 48px 24px 40px;
+  width: 100%;
+  max-width: var(--card-max-width);
+  min-height: 100dvh;
+  text-align: center;
+}
+
+.end-icon {
+  width: 64px;
+  height: 64px;
+  color: var(--color-accent);
+}
+.end-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.end-title {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 7vw, 2.6rem);
+  line-height: 1.1;
+  color: var(--color-text);
+}
+
+.end-sub {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  max-width: 320px;
+}
+
+.btn-training {
+  background: var(--color-accent) !important;
+}
+
+/* ============================================================
+   WALKTHROUGH SCREEN
+   ============================================================ */
+
+/* Same centered-cluster strategy as the game screen */
+#screen-walkthrough.active {
+  justify-content: center;
+  padding: 24px 0;
+}
+
+.wt-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: var(--card-max-width);
+  padding: 0 20px;
+}
+
+.wt-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 0;
+  min-height: 48px;
+  gap: 8px;
+}
+.wt-counter {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  min-width: 36px;
+}
+.wt-skip {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  padding: 4px 0;
+}
+.wt-skip:hover { color: var(--color-text); }
+
+/* Demo card — fixed height matching the visual card zone */
+.wt-demo-wrap {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 340px;
+}
+.wt-demo-card {
+  width: 210px;
+  height: 265px;
+  background: var(--color-card);
+  border-radius: 18px;
+  box-shadow: var(--color-card-shadow);
+  position: relative;
+  overflow: visible;
+}
+.wt-demo-illustration {
+  margin: 16px 16px 10px;
+  height: 140px;
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+.wt-demo-lines {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.wt-demo-line {
+  height: 8px;
+  background: #e8e8e8;
+  border-radius: 4px;
+}
+.wt-demo-line--short { width: 65%; align-self: center; }
+
+/* Demo stamps */
+.wt-demo-stamp {
+  position: absolute;
+  padding: 3px 10px;
+  border-radius: 5px;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 2px solid;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.wt-stamp-right {
+  right: 10px; top: 14px;
+  color: var(--color-yes); border-color: var(--color-yes);
+  background: rgba(61,186,122,0.08);
+  transform: rotate(8deg);
+}
+.wt-stamp-left {
+  left: 10px; top: 14px;
+  color: var(--color-no); border-color: var(--color-no);
+  background: rgba(193,1,3,0.08);
+  transform: rotate(-8deg);
+}
+.wt-stamp-down {
+  top: 14px; left: 50%;
+  transform: translateX(-50%) rotate(-4deg);
+  color: var(--color-unsure); border-color: var(--color-unsure);
+  background: rgba(245,185,62,0.08);
+}
+.wt-demo-tint {
+  position: absolute; inset: 0;
+  border-radius: 18px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Demo card animations */
+.wt-demo-card.anim-right { animation: wtRight 2.4s ease-in-out infinite; }
+.wt-demo-card.anim-right .wt-stamp-right { animation: wtStamp 2.4s ease-in-out infinite; }
+.wt-demo-card.anim-right .wt-demo-tint  { background: var(--color-yes); animation: wtTint 2.4s ease-in-out infinite; }
+
+.wt-demo-card.anim-left { animation: wtLeft 2.4s ease-in-out infinite; }
+.wt-demo-card.anim-left .wt-stamp-left { animation: wtStamp 2.4s ease-in-out infinite; }
+.wt-demo-card.anim-left .wt-demo-tint  { background: var(--color-no); animation: wtTint 2.4s ease-in-out infinite; }
+
+.wt-demo-card.anim-down { animation: wtDown 2.4s ease-in-out infinite; }
+.wt-demo-card.anim-down .wt-stamp-down { animation: wtStamp 2.4s ease-in-out infinite; }
+.wt-demo-card.anim-down .wt-demo-tint  { background: var(--color-unsure); animation: wtTint 2.4s ease-in-out infinite; }
+
+@keyframes wtRight {
+  0%, 15%  { transform: none; }
+  45%, 65% { transform: translateX(44px) rotate(11deg); }
+  90%, 100%{ transform: none; }
+}
+@keyframes wtLeft {
+  0%, 15%  { transform: none; }
+  45%, 65% { transform: translateX(-44px) rotate(-11deg); }
+  90%, 100%{ transform: none; }
+}
+@keyframes wtDown {
+  0%, 15%  { transform: none; }
+  45%, 65% { transform: translateY(30px) rotate(4deg); }
+  90%, 100%{ transform: none; }
+}
+@keyframes wtStamp {
+  0%, 25%  { opacity: 0; }
+  40%, 65% { opacity: 1; }
+  80%, 100%{ opacity: 0; }
+}
+@keyframes wtTint {
+  0%, 25%  { opacity: 0; }
+  40%, 65% { opacity: 0.1; }
+  80%, 100%{ opacity: 0; }
+}
+
+/* Step info panel */
+.wt-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  padding: 16px;
+  background: var(--color-card);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.wt-step-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.wt-step-icon svg { width: 20px; height: 20px; }
+.wt-icon-right { background: var(--color-yes); }
+.wt-icon-left  { background: var(--color-no); }
+.wt-icon-down  { background: var(--color-unsure); }
+
+.wt-step-copy { flex: 1; }
+.wt-step-title {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+.wt-step-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* Navigation row */
+.wt-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 0;
+  min-height: 88px;
+}
+.wt-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.wt-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--color-border);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+.wt-dot.active {
+  background: var(--color-accent);
+  transform: scale(1.25);
+}
+#btn-wt-next {
+  width: auto;
+  padding: 12px 28px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (min-width: 480px) {
+  #screen-game {
+    align-items: center;
+  }
+  .game-header,
+  .card-area,
+  .action-buttons {
+    max-width: var(--card-max-width);
+  }
+}
+
+@media (max-height: 680px) {
+  .card-area {
+    padding-top: 4px;
+    padding-bottom: 18px;
+  }
+  .action-buttons {
+    padding-bottom: 12px;
+  }
+  .action-btn {
+    width: 52px;
+    height: 52px;
+  }
+  .btn-unsure {
+    width: 44px;
+    height: 44px;
+  }
+  .wt-demo-card {
+    width: 170px;
+    height: 215px;
+  }
+  .wt-demo-illustration { height: 110px; }
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+/* Arc-and-flip: card lunges toward swipe direction, flips at peak, returns showing back face */
+@keyframes arcRight {
+  0%   { transform: translate(0, 0) rotate(0deg);           animation-timing-function: cubic-bezier(0.4, 0, 1, 0.6); }
+  45%  { transform: translate(115px, -22px) rotate(15deg);  animation-timing-function: cubic-bezier(0, 0.4, 0.6, 1); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+@keyframes arcLeft {
+  0%   { transform: translate(0, 0) rotate(0deg);            animation-timing-function: cubic-bezier(0.4, 0, 1, 0.6); }
+  45%  { transform: translate(-115px, -22px) rotate(-15deg); animation-timing-function: cubic-bezier(0, 0.4, 0.6, 1); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+@keyframes arcDown {
+  0%   { transform: translate(0, 0) rotate(0deg);      animation-timing-function: cubic-bezier(0.4, 0, 1, 0.6); }
+  45%  { transform: translate(0, 80px) rotate(4deg);   animation-timing-function: cubic-bezier(0, 0.4, 0.6, 1); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.arc-right { animation: arcRight 0.5s forwards; }
+.arc-left  { animation: arcLeft  0.5s forwards; }
+.arc-down  { animation: arcDown  0.5s forwards; }
+
+/* Card enters from bottom */
+@keyframes cardEnter {
+  from { transform: translateY(40px) scale(0.96); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+.card-enter {
+  animation: cardEnter 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
